@@ -1,0 +1,110 @@
+<tool id="topn" name="Topn" version="0.0.1">
+    <requirements>
+        <requirement type="package" >R</requirement>
+	    <requirement type="package" >r-optparse</requirement>
+        <requirement type="package" >r-xcmswrapper</requirement>
+        <requirement type="package" >r-mspurity</requirement>
+    </requirements>
+    <description>Get the top (n) peaks in a LC-MS in retention time windows of the spectrum
+    </description>
+
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+
+    <command interpreter="Rscript"><![CDATA[
+        topn.R
+            --sample_metadata=$sample_metadata
+            --out_dir=.
+            --cores=\${GALAXY_SLOTS:-4}
+            --galaxy_files='
+                #for $i in $input
+                    $i,
+                #end for
+                '
+            --files='
+                #for $i in $input
+                    $i.name,
+                #end for
+                '
+            #if $time_windows_cond.time_windows_choice== 'choose'
+                --time_window_choice='
+                #for $i, $j in enumerate($time_windows_cond.time_windows)
+                    $j.min,$j.max;
+                #end for
+                '
+            #else
+                --time_window_choice='0,90;90,660;660,1230;1230,1800;'
+            #end if
+            --file_include=$file_include
+            --scan_dens=$scan_dens
+            --n=$n
+            --snthr=$snthr
+            --minfrac=$minfrac
+            --polarity=$polarity
+            --class=$class
+            --ppm=$ppm
+
+    ]]></command>
+    <inputs>
+
+        <param name="input" type="data_collection" collection_type="list"  format="mzxml,mzml,mzdata,netcdf"
+                           label="File(s) from your history containing your chromatograms"
+                           help="Select the dataset collection containing the files that were used
+                                 for processing" />
+
+        <param name="sample_metadata" type="data" format="tsv, tabular"
+                           label="Sample meta-data"
+                           help="Metadata for each file (can re-use the sample meta-data file used for XCMS merge" />
+
+        <param name="class" type="text" label="class" value="blank"
+                    help="XCMS class to use (default is to use the blank)"/>
+
+        <param name="file_include" type="text" label="File include" value="2"
+                    help="Indexes of selected class to calculate topn on (comma separated string) e.g. 1,2"/>
+
+        <conditional name="time_windows_cond">
+            <param name="time_windows_choice" type="select" label="time-windows"
+                   help="Default time-windows for 30 min (1800 secs) divided as follows (secs)- 0 : 90 : 660 : 1230 : 1800" >
+                <option value="default_18000" selected="true">Default windows for 30 min run </option>
+                <option value="choose">User defined windows</option>
+            </param>
+            <when value="choose">
+                <repeat name="time_windows" title="Time windows">
+                    <param name="min" type="integer" label="min (sec)" value="0"/>
+                    <param name="max" type="integer" label="max (sec)" value="90"/>
+                </repeat>
+            </when>
+        </conditional>
+
+        <param name="scan_dens" type="integer" label="Scan density" value="5"
+                    help="for scan range x to y, take every 'n' scan (i.e. x, x+n, x+2n ... y)"/>
+
+        <param name="n" type="integer" label="Number of peaks to select" value="100"
+                    help="The number of most intense peaks to select "/>
+
+        <param name="ppm" type="float" label="PPM tolerance" value="5"
+                    help="Parts per million tolerance for m/z between scans "/>
+
+        <param name="snthr" type="float" label="SNR threshold" value="100"
+                    help="Signal to noise threshold"/>
+
+        <param name="minfrac" type="float" label="minfrac" value="0.1" min="0" max="1"
+                    help="Minimum fraction peak has to be present in windows (typically set low to catch more peaks)"/>
+        <param name="polarity" type="select" label="Polarity">
+                <option value="positive" selected="true" >Positive</option>
+                <option value="negative" >Negative</option>
+        </param>
+
+
+    </inputs>
+    <outputs>
+	    <data name="topn_peaklist" format="tsv" label="topn_peaklist"
+              from_work_dir="topn_peaklist.txt" visible="true"/>
+    </outputs>
+    <tests>
+    </tests>
+    <help><![CDATA[
+
+    ]]></help>
+</tool>

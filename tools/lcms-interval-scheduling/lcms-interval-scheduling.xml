@@ -1,0 +1,108 @@
+<tool id="lcms-interval-scheduling" name="LC-MS interval scheduling" version="0.0.1">
+    <requirements>
+        <requirement type="package" >R</requirement>
+	    <requirement type="package" >r-optparse</requirement>
+        <requirement type="package" >r-XCMSwrapper</requirement>
+    </requirements>
+    <description>Generate target lists from LC-MS features for a fragmentation experiment
+    </description>
+
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <command interpreter="Rscript"><![CDATA[
+        lcms-interval-scheduling.R
+                --xset_path=$xset_path
+                --sample_peaklist=$sample_peaklist
+                --blank_peaklist=$blank_peaklist
+    ]]></command>
+    <inputs>
+        <param type="data" name="sample_peaklist" label="Sample peaklist" format="tsv,tabular"
+                help="The peaklist from the samples to be scheduled for fragmentation"/>
+
+        <param type="data" name="blank_peaklist" label="Blank peaklist" format="tsv,tabular"
+                help="The peaklist of blank features to avoid when performing fragmentation"/>
+
+        <param type="data" name="topn_blanks" label="Topn blank peaklist" format="tsv,tabular"
+                help="The top (n) blank peaks determined from windows of the spectrum (i.e. not using XCMS)"/>
+
+        <conditional name="method_select">
+            <param name="method" type="select" label="Nearline method">
+                <option value="simple" >Simple nearline (divide equally amongst runs) </option>
+                <option value="interval">Interval schedule with defined overlap</option>
+                <option value="interval_min_overlap" selected="true">Interval schedule with defined overlap. Overlap is also minimized</option>
+                <option value="metshot">Original metshot algorithm (No overlapping features)</option>
+            </param>
+            <when value="metshot">
+                <param name="fillGaps" type="boolean" label="Fill gaps"/>
+            </when>
+            <when value="simple">
+                <param name="maxms2" type="integer" label="Max MS2 per run" value="2000"/>
+                <param name="ilimit" type="float" label="Intensity (peak area) limit to be included" value="5000"/>
+            </when>
+            <when value="interval">
+                <param name="overlappingP" type="integer" label="Max number of overlapping peaks" value="10"/>
+            </when>
+            <when value="interval_min_overlap">
+                <param name="overlappingP" type="integer" label="Max number of overlapping peaks" value="10"/>
+            </when>
+        </conditional>
+
+        <param name="widthFactor" type="float" label="Width factor" value="1"
+                    help="Increase the width of the peaks by the chosen factor "/>
+
+        <param name="minWidth" type="float" label="Minimum width of peak (sec)" value="5"
+                    help="The time range will always be >= to this value (even if the prior peak width is calculated
+                          to be smaller)"/>
+
+        <param name="shift" type="float" label="Shift (sec)" value="0" help="Shift all the peaks by value to account for drift"/>
+        <param name="samplelistNm" type="integer" label="Number of MS2 runs to perform" value="4"/>
+        <param name="fullpw" type="boolean" label="Use full peak width?" help="" />
+        <param name="b_widthFactor" type="float" label="Width factor (for blank)" value="2"
+                    help="Increase the width of the peaks by the chosen factor "/>
+
+        <param name="b_shift" type="float" label="Shift (for blank) (sec)" value="0" help="Shift all the peaks by value to account for drift"/>
+        <param name="b_exclu_limit" type="integer" label="Exclusion limit" value="5000" help="Limit of peaks to put on exclusion limit"/>
+        <param name="polarity" type="select" label="Polarity">
+                <option value="positive" selected="true" >Positive</option>
+                <option value="negative" >Negative</option>
+        </param>
+
+    </inputs>
+    <outputs>
+	    <data name="peaklist_filtered" format="tabular" label="peaklist_filtered"
+              from_work_dir="peaklist_filtered.txt" visible="true"/>
+        <data name="removed_peaks" format="tabular" label="removed_peaks"
+              from_work_dir="removed_peaks.txt" visible="true"/>
+        <data name="xset_filtered" format="rdata" label="xset_filtered"
+              from_work_dir="xset_filtered.RData" visible="true"/>
+    </outputs>
+    <tests>
+        <test>
+            <param name="blank_flag.blank_flag" value="update" />
+            <conditional name="blank_flag">
+                <param name="blank_flag"  value="update"/>
+                <param name="blank_class" value="KO" />
+            </conditional>
+            <conditional name="peak_removal">
+                <param name="peak_removal"  value="remove"/>
+            </conditional>
+            <param name="xset_path" value="xset.RData" type="rdata"  />
+            <output name="peaklist_filtered" type="tabular" file="peaklist_filtered.tabular">
+                <assert_contents>
+                    <has_n_columns n="33" />
+                </assert_contents>
+            </output>
+            <output name="removed_peaks" type="tabular" file="removed_peaks.tabular">
+                <assert_contents>
+                    <has_n_columns n="34" />
+                </assert_contents>
+            </output>
+            <output name="xset_filtered" type="rdata" file="xset_filtered.RData"/>
+
+        </test>
+    </tests>
+    <help><![CDATA[
+
+    ]]></help>
+</tool>

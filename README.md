@@ -1,2 +1,2 @@
-# lcms-interval-scheduling-galaxy
-Galaxy wrapper for LC-MS feature interval scheduling
+# dma-tools-galaxy
+Tools for use with DMA data processing, annotation and nearline processing

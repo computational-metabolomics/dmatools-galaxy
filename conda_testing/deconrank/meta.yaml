@@ -1,0 +1,48 @@
+{% set version = '0.0.2' %}
+
+package:
+  name: deconrank
+  version: {{ version|replace("-", "_") }}
+
+source:
+  fn: deconrank6.tar.gz
+  url: https://www.dropbox.com/s/q7qfk1e95bp162l/deconrank6.tar.gz?dl=1
+
+
+requirements:
+  build:
+    - python
+    - pip
+    - setuptools
+    - numpy
+
+  run:
+    - python
+    - setuptools
+    - numpy
+
+test:
+  # Python imports
+  imports:
+    - deconrank
+
+  commands:
+    # You can put test commands to be run here.  Use this to test that the
+    # entry points work.
+    - python -m deconrank -h
+
+  # You can also put a file called run_test.py in the recipe that will be run
+  # at test time.
+
+  # requires:
+    # Put any additional test requirements here.  For example
+    # - nose
+
+about:
+  home: http://www.github.com/computational-metabolomics/deconrank
+  license: MIT License
+  summary: 'Rank precursors from a LC-MS or DI-MS experiment for a later fragmentation run'
+
+# See
+# http://docs.continuum.io/conda/build.html for
+# more information about meta.yaml

@@ -1,0 +1,58 @@
+<tool id="h-concatenate" name="h-concatenate" version="0.0.1">
+    <description>Horizontal concatenation of user defined columns from multiple tables</description>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <requirements>
+        <requirement type="package" >R</requirement>
+	    <requirement type="package" >r-optparse</requirement>
+    </requirements>
+    <command interpreter="Rscript" ><![CDATA[
+        h-concatenate.R
+            -f '
+            #for $i, $tc in enumerate($tablecolumns)
+                $tc.table;
+            #end for
+            '
+            -c '
+            #for $i, $tc in enumerate($tablecolumns)
+                $tc.columns;
+            #end for
+            '
+            -o .
+            #if $update_columns.update_columns== 'choose'
+                -u $update_columns.uc
+            #end if
+
+    ]]></command>
+    <inputs>
+        <repeat name="tablecolumns" title="Table and columns to concatenate">
+            <param name="table" type="data" format="tsv,tabular"
+                           multiple="false" label="Choose the file to concatenate"/>
+            <param name="columns" type="text" label="Columns to concatenate"
+               help="Comma separated string of columns to concatenate eg. mz,intensity"  />
+        </repeat>
+         <conditional name="update_columns">
+            <param name="update_columns" type="select" label="Update column order?" >
+                <option value="choose">Update column order</option>
+                <option value="none" selected="true" >Keep column order</option>
+            </param>
+            <when value="choose">
+                                <param name="uc" type="text" label="Updated columns"
+               help="Comma separated string of column names in the desired order (must match the above selected columns)"  />
+            </when>
+        </conditional>
+
+    </inputs>
+    <outputs>
+        <data name="combined_table" label="${tool.name} on ${on_string}"
+              from_work_dir="combined_table.tsv" visible="true" type="data" format="tsv"/>
+    </outputs>
+    <tests>
+
+    </tests>
+    <help><![CDATA[
+
+
+    ]]></help>
+</tool>

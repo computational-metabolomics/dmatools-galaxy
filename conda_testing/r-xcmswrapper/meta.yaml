@@ -1,0 +1,49 @@
+{% set version = '0.0.1' %}
+
+package:
+  name: r-xcmswrapper
+  version: {{ version|replace("-", "_") }}
+
+source:
+  fn: xcmsWrapper.tar.gz
+  url: https://www.dropbox.com/s/ta9i96yyv4ouk3q/XCMSwrapper.tar.gz?dl=1
+
+build:
+  number: 0
+  skip: True # [osx]
+  rpaths:
+    - lib/R/lib/
+    - lib/
+
+requirements:
+  build:
+    - bioconductor-biobase
+    - bioconductor-biocgenerics
+    - 'bioconductor-mzr >=1.1.6'
+    - bioconductor-xcms
+    - r-base
+    - r-rcolorbrewer
+    - r-intervals
+    - r-nnet
+
+
+  run:
+    - bioconductor-biobase
+    - bioconductor-biocgenerics
+    - 'bioconductor-mzr >=1.1.6'
+    - bioconductor-xcms
+    - r-base
+    - r-rcolorbrewer
+    - r-intervals
+    - r-nnet
+
+
+
+
+test:
+  commands:
+    - '$R -e "library(''XCMSwrapper'')"'
+about:
+  home: https://github.com/computational-metabolomics/xcmswrapper
+  license: 'GPL (>= 2) + file LICENSE'
+  summary: 'Various tools for LC-MS data processing'

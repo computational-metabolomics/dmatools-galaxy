@@ -1,0 +1,147 @@
+<tool id="deconrank" name="deconrank" version="0.1.0">
+    <requirements>
+        <requirement type="package" version="0.0.2">deconrank</requirement>
+    </requirements>
+    <description>Deconvolute adducts and isotopes then score and rank for fragmentation</description>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <command ><![CDATA[
+        python -m deconrank
+                    -i $peaks_file
+                    -o .
+                    --delim tab
+                    #if not $polarity == "auto"
+                        --pol $polarity
+                    #end if
+                    --tech $technology
+                    --pol $polarity
+                    #if $rulescores == "user"
+                        --rp $rulescores.rulescores
+                    #end if
+                    --pthr $pthr
+                    --stp $stp
+                    --irm "$irm"
+                    --max_time $dschedule.max_time
+                    --min_time $dschedule.min_time
+                    --max_cid_time $dschedule.max_cid_time
+                    --peak_time_cid $dschedule.peak_time_cid
+                    --peak_time_hcd $dschedule.peak_time_hcd
+                    --percentage_cid $dschedule.percentage_cid
+                    --delay_time $dschedule.delay_time
+                    #if $full_output
+                        --full_output
+                    #end if
+    ]]></command>
+
+    <inputs>
+        <param type="data" name="peaks_file" format="tabular,tsv"
+                help="tsv or tabular file with mz and intensity columns"/>
+
+        <param name="technology" type="select" label="technology" help="Mass spectrometry technology used" >
+            <option value="lcms" selected="true">LC-MS</option>
+            <option value="dims">DI-MS</option>
+        </param>
+
+        <param name="polarity" type="select" label="polarity" help="polarity [pos, neg], will assign automatically
+                                                                    based on input file name if not defined" >
+            <option value="auto" selected="true">automatic (based on input file name)</option>
+            <option value="pos" >positive</option>
+            <option value="neg">negative</option>
+        </param>
+
+        <conditional name="rulescores">
+            <param name="rulescores" type="select" label="Scores for adducts" >
+                <option value="default" >Default</option>
+                <option value="user" >Provide a csv file of the rules to use</option>
+            </param>
+            <when value="user">
+                        <param type="data" name="rulescores" format="tsv, tabular"
+                help="User supplied rules file used to for scoring adducts, should contain at least
+                      2 columns: [name, fragscore]
+                      Where a score of 1 indicates the adduct is the best adduct form to fragment"/>
+            </when>
+        </conditional>
+
+        <param name="pthr" label="precursor ion purity threshold" type="float" value="0.4" min="0" max="1"/>
+        <param name="stp" label="Second tier percentage" type="float" value="0.0" min="0" max="1"
+               help="Second tier percentage, % of second tier that we go into the target list. should be in decimal
+                format i.e. 0.1 = 10%. Default is to remove all second tier peaks (i.e. set to 0.0)"/>
+
+        <param name="irm" type="select" multiple="true" label="isotope removal" help="" >
+            <option value="[M]+">[M]+</option>
+            <option value="[M+1]+" selected="true">[M+1]+</option>
+            <option value="[M+2]+" selected="true" >[M+2]+</option>
+            <option value="[M+3]+">[M+3]+</option>
+            <option value="[M+4]+">[M+4]+</option>
+            <option value="[M]2+">[M]2+</option>
+            <option value="[M+1]2+">[M+1]2+</option>
+            <option value="[M+2]2+">[M+2]2+</option>
+            <option value="[M+3]2+">[M+3]2+</option>
+            <option value="[M+4]2+">[M+4]2+</option>
+            <option value="[M]3+">[M]3+</option>
+            <option value="[M+1]3+">[M+1]3+</option>
+            <option value="[M+2]3+">[M+2]3+</option>
+            <option value="[M+3]3+">[M+3]3+</option>
+            <option value="[M+4]3+">[M+4]3+</option>
+        </param>
+
+        <param name="full_output" type="boolean" label="Use extended output for the scores tsv file?"/>
+
+        <section name="weights" title="Weightings for scores" expanded="False" help="All values need to sum to 1">
+            <param name="adduct" type="float" value="0.3" min="0" max="1"/>
+            <param name="intensity" type="float" value="0.3" min="0" max="1" />
+            <param name="precursor-ion-purity" type="float" value="0.2" min="0" max="1" />
+            <param name="clustern" type="float" value="0.2" min="0" max="1" />
+        </section>
+
+
+
+
+        <section name="dschedule" title="Scheduling features for DIMS fragmentation experimental run" expanded="False">
+            <param name="max_time" type="float" value="1800" help="Max time for run (secs)"/>
+            <param name="min_time" type="float" value="120" help="Min time for run (secs)"/>
+            <param name="max_cid_time" type="float" value="300" help="Max time to perform CID fragmentation (secs)" />
+            <param name="peak_time_hcd" type="float" value="10" help="Time to fragment a peak using HCD (secs)" />
+            <param name="peak_time_cid" type="float" value="12" help="Time to fragment a peak using CID (secs)" />
+            <param name="percentage_cid" type="float" value="0.333" min="0" max="1" help="Percentage of time fragmenting using
+                                                            CID (rather than HCD)"/>
+            <param name="delay_time" type="float" value="24" help="Delay time before acquisition begins (secs)"/>
+        </section>
+
+
+
+    </inputs>
+    <outputs>
+        <data name="decon_scores" label="${tool.name} on ${on_string}: scores"
+              from_work_dir="scores.tsv" visible="true" type="data" format="tsv"/>
+        <data name="decon_traceback" label="${tool.name} on ${on_string}: traceback"
+              from_work_dir="traceback.tsv" visible="true" type="data" format="tsv"/>
+        <data name="decon_xcalibur_auto_input" label="${tool.name} on ${on_string}: XcaliburAuto input"
+              from_work_dir="XcaliburAutoInput.tsv" visible="true" type="data" format="tsv">
+            <filter>technology == "dims"</filter>
+        </data>
+        <data name="decon_targets" label="${tool.name} on ${on_string}: targets"
+              from_work_dir="target.tsv" visible="true" type="data" format="tsv">
+            <filter>technology == "dims"</filter>
+        </data>
+
+
+
+    </outputs>
+    <tests>
+        <test>
+            <param name="peaks_file" value="camera_annotated_peaklist.txt" ftype="tsv"/>
+            <param name="technology" value="dims"/>
+            <param name="polarity" value="pos"/>
+            <output name="decon_scores" value="scores.tsv"/>
+            <output name="decon_traceback" value="traceback.tsv"/>
+            <output name="decon_xcalibur_auto_input" value="XcaliburAutoInput.tsv"/>
+            <output name="targets" value="target.tsv"/>
+        </test>
+    </tests>
+    <help><![CDATA[
+
+
+    ]]></help>
+</tool>
