@@ -85,4 +85,4 @@ topn = create_incl(grps = topn, incl_in = NULL, write_file = F, posneg = opt$pol
 
 print('HEAD ROWS OF TOPN')
 print(head(topn))
-write.table(topn, file.path(opt$out_dir, 'topn.tsv'), row.names=FALSE, sep='\t')
+write.table(topn, file.path(opt$out_dir, 'topn_peaklist.tsv'), row.names=FALSE, sep='\t')

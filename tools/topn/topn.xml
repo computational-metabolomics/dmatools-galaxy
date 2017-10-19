@@ -5,7 +5,7 @@
         <requirement type="package" >r-xcmswrapper</requirement>
         <requirement type="package" >r-mspurity</requirement>
     </requirements>
-    <description>Get the top (n) peaks in a LC-MS in retention time windows of the spectrum
+    <description>Get the top (n) peaks in selected retention time windows of an LC-MS experiment
     </description>
 
     <stdio>
@@ -100,7 +100,7 @@
     </inputs>
     <outputs>
 	    <data name="topn_peaklist" format="tsv" label="topn_peaklist"
-              from_work_dir="topn_peaklist.txt" visible="true"/>
+              from_work_dir="topn_peaklist.tsv" visible="true"/>
     </outputs>
     <tests>
     </tests>

@@ -118,7 +118,7 @@
                 <param name="egauss_thr" type="text" label="egauss_thr" value="NA"
                     help="Threshold for filtering out non gaussian shaped peaks. Note this only works
                             if the 'verbose columns' and 'fit gauss' was used with xcms (--egauss_thr)"/>
-                <param name="temp_save" type="boolean" label="temp_save" value="TRUE" truevalue="--temp_save" falsevalue=""
+                <param name="temp_save" type="boolean" label="temp_save" checked="false" truevalue="--temp_save" falsevalue=""
                     help="Assign True if files for each step saved (for testing purposes) (--temp_save)"/>
                 <param name="polarity" type="select" label="polarity"
                     help="polarity (just used for naming purpose when files are saved) (--polarity)">

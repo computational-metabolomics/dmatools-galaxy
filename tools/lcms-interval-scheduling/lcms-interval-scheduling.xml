@@ -12,9 +12,41 @@
     </stdio>
     <command interpreter="Rscript"><![CDATA[
         lcms-interval-scheduling.R
-                --xset_path=$xset_path
+
                 --sample_peaklist=$sample_peaklist
                 --blank_peaklist=$blank_peaklist
+                --topn=$topn
+                --out_dir=.
+                --method=$method_select.method
+                #if $method_select.method=='metshot'
+                    #if $method_select.fillgaps
+                        --fillgaps
+                    #end if
+                #elif $method_select.method=='simple'
+                    --maxms2=$method_select.maxms2
+                    --ilimit=$method_select.ilimit
+                #else
+                    --overlappingP=$method_select.overlappingP
+                #end if
+                --widthFactor=$widthFactor
+                --minWidth=$minWidth
+                --shift=$shift
+                --samplelistNm=$samplelistNm
+                #if $fullpw
+                   --fullpw
+                #end if
+                --b_widthFactor=$b_widthFactor
+                --b_shift=$b_shift
+                --b_exclu_limit=$b_exclu_limit
+                --b_minWidth=$b_minWidth
+                --polarity=$polarity
+                #if $dma_nearline_cond.dma=='yes'
+                    --blankClass=$dma_nearline_cond.blankClass
+                    --filterS=$dma_nearline_cond.filterS
+                    --dmaNearline
+                #end if
+                --intensityCN=$intensityCN
+                --sortCN=$sortCN
     ]]></command>
     <inputs>
         <param type="data" name="sample_peaklist" label="Sample peaklist" format="tsv,tabular"
@@ -23,7 +55,7 @@
         <param type="data" name="blank_peaklist" label="Blank peaklist" format="tsv,tabular"
                 help="The peaklist of blank features to avoid when performing fragmentation"/>
 
-        <param type="data" name="topn_blanks" label="Topn blank peaklist" format="tsv,tabular"
+        <param type="data" name="topn" label="Topn blank peaklist" format="tsv,tabular"
                 help="The top (n) blank peaks determined from windows of the spectrum (i.e. not using XCMS)"/>
 
         <conditional name="method_select">
@@ -61,6 +93,11 @@
         <param name="b_widthFactor" type="float" label="Width factor (for blank)" value="2"
                     help="Increase the width of the peaks by the chosen factor "/>
 
+        <param name="b_minWidth" type="float" label="Minimum width of peak (sec) (for blank)" value="5"
+                    help="The time range will always be >= to this value (even if the prior peak width is calculated
+                          to be smaller) (for blank)"/>
+
+
         <param name="b_shift" type="float" label="Shift (for blank) (sec)" value="0" help="Shift all the peaks by value to account for drift"/>
         <param name="b_exclu_limit" type="integer" label="Exclusion limit" value="5000" help="Limit of peaks to put on exclusion limit"/>
         <param name="polarity" type="select" label="Polarity">
@@ -68,14 +105,49 @@
                 <option value="negative" >Negative</option>
         </param>
 
+        <param name="sortCN" type="text" label="column of sample peaklist to order by" value="totalS"
+                       help="default value corresponds if the tool 'deconrank' has been run prior. The 'total score'
+                           column is based on multiple criteria (see deconrank tool).
+                            If not using the deconrank tool, any other column can be used e.g. intensity (peak area)"/>
+
+        <param name="intensityCN" type="text" label="column to use for intensity (peak area) for sample" value="i"/>
+
+
+        <conditional name="dma_nearline_cond">
+            <param name="dma" type="select" label="Use as part of DMA nearline workflow?"
+                   help="If using within the nearline LC-MS workflow then certain processing needs to be performed,
+                         including filtering out peaks that are not to be scheduled">
+                <option value="yes">Yes</option>
+                <option value="no" select="no">No</option>
+            </param>
+            <when value="yes">
+                <param name="blankClass" type="text" label="Blank class" value="blank"
+                       help="Note that this will have to change if the blank class has a different name. Uses the valid
+                             column e.g. [blank_name]_valid.
+                             If he value is 1 (we keep) if 0 (we do not use)" />
+                <param name="filterS" type="text" label="Column name to filter sample on" value="excludedFinal"
+                        help="This is a bit confusing.. But if this value is 1 then (we exclude) and if 0 (we keep for the
+                               sample)"/>
+            </when>
+        </conditional>
+
+
+
+
+
+
+
     </inputs>
     <outputs>
-	    <data name="peaklist_filtered" format="tabular" label="peaklist_filtered"
-              from_work_dir="peaklist_filtered.txt" visible="true"/>
-        <data name="removed_peaks" format="tabular" label="removed_peaks"
-              from_work_dir="removed_peaks.txt" visible="true"/>
-        <data name="xset_filtered" format="rdata" label="xset_filtered"
-              from_work_dir="xset_filtered.RData" visible="true"/>
+        <collection name="inclusion_lists" type="list" label="${tool.name} on ${on_string}: inclusion lists">
+            <discover_datasets pattern="(?P&lt;designation&gt;.+inclusion.+).csv" format="csv" directory="." />
+        </collection>
+        <collection name="exclusion_lists" type="list" label="${tool.name} on ${on_string}: exclusion lists">
+            <discover_datasets pattern="(?P&lt;designation&gt;.+exclusion.+).csv" format="csv" directory="." />
+        </collection>
+        <data format="pdf" name="overlap_plots_positive"  label="${tool.name} on ${on_string}: overlap plots"
+         from_work_dir="overlap_plots_positive.pdf"/>
+
     </outputs>
     <tests>
         <test>
