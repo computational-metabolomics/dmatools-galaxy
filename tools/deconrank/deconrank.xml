@@ -1,13 +1,14 @@
 <tool id="deconrank" name="deconrank" version="0.1.0">
     <description>Deconvolute adducts and isotopes then score and rank for fragmentation</description>
     <requirements>
-        <requirement type="package" version="0.0.2">deconrank</requirement>
+        <requirement type="package" version="0.0.3">deconrank</requirement>
     </requirements>
     <stdio>
         <exit_code range="1:" />
     </stdio>
 
     <command ><![CDATA[
+
         python -m deconrank
                     -i $peaks_file
                     -o .
@@ -33,7 +34,11 @@
                     #if $full_output
                         --full_output
                     #end if
-    ]]></command>
+                    #if $dschedule.template_cond.template_select == "user"
+                        --method_template_name $dschedule.template_cond.template_name
+                    #end if
+
+     ]]></command>
 
     <inputs>
         <param type="data" name="peaks_file" format="tabular,tsv"
@@ -109,6 +114,18 @@
             <param name="percentage_cid" type="float" value="0.333" min="0" max="1" help="Percentage of time fragmenting using
                                                             CID (rather than HCD)"/>
             <param name="delay_time" type="float" value="24" help="Delay time before acquisition begins (secs)"/>
+
+            <conditional name="template_cond">
+                <param name="template_select" type="select" label="Use default method template file names?"
+                  help="Default names are: Neg_MSMS_MSn.meth and Pos_MSMS_MSn.meth">
+                    <option value="default" >Default</option>
+                    <option value="user" >Provide name</option>
+                </param>
+                <when value="user">
+                         <param name="template_name" label="method template name" type="text" />
+                </when>
+                <when value="default"> </when>
+            </conditional>
         </section>
 
 
