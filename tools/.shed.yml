@@ -1,0 +1,13 @@
+owner: tomnl
+remote_repository_url: https://github.com/computational-metabolomics/dma-tools-galaxy
+homepage_url: https://github.com/computational-metabolomics/dma-tools-galaxy
+categories: ["Metabolomics"]
+auto_tool_repositories:
+  name_template: "{{ tool_name }}"
+  description_template: "The tool {{ tool_name }} is from the dma-tools suite."
+include:
+  - test-data/**
+suite:
+  name: "suite_dma_tools"
+  description: "A suite of Galaxy tools used for deep metabolome annotation"
+  long_description: "Tools for various stages of data processing, analysis and annotation for deep metabolome annotation. Note, these tools should be used with with other independant tool-suites and tools including dimspy, xcms and mspurity"

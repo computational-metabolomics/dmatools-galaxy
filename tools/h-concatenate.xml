@@ -1,4 +1,4 @@
-<tool id="h-concatenate" name="h-concatenate" version="0.0.1">
+<tool id="h_concatenate" name="h_concatenate" version="0.0.1">
     <description>Horizontal concatenation of user defined columns from multiple tables</description>
     <stdio>
         <exit_code range="1:" />

@@ -1,8 +1,8 @@
-<tool id="lcms-interval-scheduling" name="LC-MS interval scheduling" version="0.0.1">
+<tool id="lcms_interval_scheduling" name="lcms_interval_scheduling" version="0.0.2">
     <requirements>
         <requirement type="package" >R</requirement>
 	    <requirement type="package" >r-optparse</requirement>
-        <requirement type="package" >r-XCMSwrapper</requirement>
+        <requirement type="package" >r-xcmswrapper</requirement>
     </requirements>
     <description>Generate target lists from LC-MS features for a fragmentation experiment
     </description>

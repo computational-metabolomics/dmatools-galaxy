@@ -1,4 +1,0 @@
-categories: ["Metabolomics"]
-description: Tool to create filelist for DMA-DIMS nearline
-name: dma_filelist_generation
-owner: tomnl

@@ -1,4 +1,4 @@
-<tool id="dma-filelist-generation" name="dma-filelist-generation" version="0.1.0">
+<tool id="dma_filelist_generation" name="dma_filelist_generation" version="0.1.0">
     <description>Generate filelist for DMA DIMS nearline</description>
     <stdio>
         <exit_code range="1:" />

@@ -1,9 +1,8 @@
-<tool id="topn" name="Topn" version="0.0.1">
+<tool id="topn" name="topn" version="0.0.1">
     <requirements>
         <requirement type="package" >R</requirement>
 	    <requirement type="package" >r-optparse</requirement>
         <requirement type="package" >r-xcmswrapper</requirement>
-        <requirement type="package" >r-mspurity</requirement>
     </requirements>
     <description>Get the top (n) peaks in selected retention time windows of an LC-MS experiment
     </description>
