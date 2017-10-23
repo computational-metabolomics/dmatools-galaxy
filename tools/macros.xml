@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<macros>
+    <xml name="requirements">
+        <requirements>
+            <requirement type="package" >R</requirement>
+	        <requirement type="package" >r-optparse</requirement>
+            <requirement type="package" >r-xcmswrapper</requirement>
+        </requirements>
+    </xml>
+</macros>

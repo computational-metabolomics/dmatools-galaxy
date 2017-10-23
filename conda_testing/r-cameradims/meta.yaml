@@ -1,0 +1,40 @@
+{% set version = '0.2.2' %}
+
+package:
+  name: r-cameradims
+  version: {{ version|replace("-", "_") }}
+
+source:
+  fn: cameraDIMS.tar.gz
+  url: https://www.dropbox.com/s/jl2ku9mff698f8s/cameraDIMS.tar.gz?dl=1
+
+build:
+  number: 0
+  skip: True # [osx]
+  rpaths:
+    - lib/R/lib/
+    - lib/
+
+requirements:
+  build:
+    - r-base
+    - bioconductor-biobase
+    - bioconductor-graph
+    - r-hmisc
+    - r-igraph
+
+  run:
+    - r-base
+    - bioconductor-biobase
+    - bioconductor-graph
+    - r-hmisc
+    - r-igraph
+
+
+test:
+  commands:
+    - '$R -e "library(''cameraDIMS'')"'
+about:
+  home: https://github.com/computational-metabolomics/cameraDIMS
+  license: 'GPL (>= 2) + file LICENSE'
+  summary: 'Modification of R CAMERA package to work with DIMS peaklists'

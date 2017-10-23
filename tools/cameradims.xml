@@ -1,0 +1,99 @@
+<tool id="cameradims" name="CAMERA_DIMS" version="0.1.0">
+    <description>Modification of the R package CAMERA to work on a DIMS dasets</description>
+    <requirements>
+        <requirement type="package" >R</requirement>
+	    <requirement type="package" >r-optparse</requirement>
+        <requirement type="package" version="0.2.2">r-cameradims</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <command interpreter="Rscript"><![CDATA[
+        cameradims.R --in_file $peaks_file
+                      --out_dir .
+                      --ppm $ppm
+                      --maxiso $maxiso
+                      --mzabs $mzabs
+                      --maxcharge $maxcharge
+                      --maxmol $maxmol
+                      --polarity $polarity
+                      --rule_type $ruleset.ruleset
+                      #if $ruleset.ruleset == 'user'
+                        --rule_path $ruleset.rulesfile
+                      #end if
+                      #if $export_ruleset
+                        --export_ruleset
+                      #end if
+                        --intensity_filter=$intensity_filter
+    ]]></command>
+
+    <inputs>
+        <param type="data" name="peaks_file" format="tabular,tsv"
+                help="tsv or tabular file with mz and intensity columns"/>
+        <param name="ppm" type="float" label="ppm" value="2"
+                    help="general ppm error"/>
+        <param name="mzabs" type="float" label="mzabs" value="0.015"
+                    help="general absolute error in m/z"/>
+        <param name="maxmol" type="integer" label="maxmol" value="3"
+                    help="highest number(n) of allowed clusterion [nM+ion] (argument called multiplier in findAdducts())"/>
+        <param name="maxiso" type="integer" label="maxiso" value="4"
+                    help="max number of expected isotopes"/>
+        <param name="maxcharge" type="integer" label="maxcharge" value="3"
+                    help="max ion charge for finding isotopes"/>
+        <param name="polarity" type="select" label="polarity" help="Which polarity mode was used for measuring of the ms sample" >
+            <option value="pos" selected="true">positive</option>
+            <option value="neg">negative</option>
+        </param>
+
+        <param name="intensity_filter" type="float" label="Intensity filter" value="5000"
+                    help="Filter out any peaks that have intensity less than this value. (Adduct calculation may take
+                          a very long time if peaks are not filtered before hand)  "/>
+
+        <conditional name="ruleset">
+            <param name="ruleset" type="select" label="Rules for adducts" >
+                <option value="primary adducts" >Primary adducts ([M+Na]+, [M+K]+ and [M+NH4]+")</option>
+                <option value="extended" selected="true" >Extended adducts</option>
+                <option value="user" >Provide a csv file of the rules to use</option>
+            </param>
+            <when value="user">
+                        <param type="data" name="rulesfile" format="tsv, tabular"
+                help="User supplied rules file used to to calculate adducts, should contain the following
+                      columns name,nmol,charge,massdiff,oidscore,quasi,ips.
+                      If using the adducts to guide fragmentation then the frag_score column should be included. Where
+                      a score of 1 indicates the adduct is the best adduct form to fragment"/>
+            </when>
+            <when value="extended">
+            </when>
+            <when value="primary adducts">
+            </when>
+        </conditional>
+        <param name="export_ruleset" type="boolean" label="Export the adduct ruleset used?" help=""/>
+    </inputs>
+    <outputs>
+	    <data name="camera_annotated_map" format="tsv" label="${tool.name} on ${on_string}: map"
+              from_work_dir="camera_annotated_map.txt"  />
+        <data name="camera_annotated_peaklist" label="${tool.name} on ${on_string}: peaklist"
+              from_work_dir="camera_annotated_peaklist.txt" format="tsv"/>
+        <data name="ruleset" label="${tool.name} on ${on_string}: ruleset"
+              from_work_dir="ruleset.txt"  format="tsv">
+            <filter>export_ruleset is True</filter>
+        </data>
+
+
+
+    </outputs>
+    <tests>
+        <test>
+            <param name="peaks_file" value="peaklist_in.tsv" ftype="tsv"/>
+            <output name="camera_annotated_peaklist" value="camera_annotated_peaklist.txt"/>
+            <output name="camera_annotated_map" value="camera_annotated_map.txt"/>
+        </test>
+    </tests>
+    <help><![CDATA[
+    cameraDIMS
+
+    ]]></help>
+    <citations>
+            <citation type="doi">10.1021/ac202450g</citation>
+    </citations>
+</tool>

@@ -1,6 +1,6 @@
 <tool id="lcms_interval_scheduling" name="lcms_interval_scheduling" version="0.0.2">
     <requirements>
-        <requirement type="package" >R</requirement>
+        <requirement type="package" >r</requirement>
 	    <requirement type="package" >r-optparse</requirement>
         <requirement type="package" >r-xcmswrapper</requirement>
     </requirements>

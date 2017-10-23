@@ -3,10 +3,8 @@ remote_repository_url: https://github.com/computational-metabolomics/dma-tools-g
 homepage_url: https://github.com/computational-metabolomics/dma-tools-galaxy
 categories: ["Metabolomics"]
 auto_tool_repositories:
-  name_template: "{{ tool_name }}"
+  name_template: "{{ tool_id }}"
   description_template: "The tool {{ tool_name }} is from the dma-tools suite."
-include:
-  - test-data/**
 suite:
   name: "suite_dma_tools"
   description: "A suite of Galaxy tools used for deep metabolome annotation"

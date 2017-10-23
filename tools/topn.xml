@@ -1,6 +1,6 @@
 <tool id="topn" name="topn" version="0.0.1">
     <requirements>
-        <requirement type="package" >R</requirement>
+        <requirement type="package" >r</requirement>
 	    <requirement type="package" >r-optparse</requirement>
         <requirement type="package" >r-xcmswrapper</requirement>
     </requirements>
