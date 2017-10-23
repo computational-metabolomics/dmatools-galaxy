@@ -1,12 +1,12 @@
-{% set version = '0.0.4' %}
+{% set version = '0.0.7' %}
 
 package:
   name: deconrank
   version: {{ version|replace("-", "_") }}
 
 source:
-  fn: deconrank_v0_0_4.tar.gz
-  url: https://www.dropbox.com/s/36ccoumey0ontfw/deconrank_v0_0_4.tar.gz?dl=1
+  fn: deconrank_v0_0_7.tar.gz
+  url: https://www.dropbox.com/s/bn7suc1ttqzxsts/deconrank_v0_0_7.tar.gz?dl=1
 
 
 requirements:
