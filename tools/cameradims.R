@@ -49,6 +49,9 @@ if(is.null(opt$rule_export)){
 }
 
 df$mz <- as.numeric(df$mz)
+
+print(head(df$mz))
+
 if ('intensity' %in% colnames(df)){
     colnames(df)[colnames(df)=='intensity'] = 'i'
 }
@@ -60,7 +63,9 @@ if (!'peakID' %in% colnames(df)){
 df$i <- as.numeric(df$i)
 
 df <- df[df$i>opt$intensity_filter,]
-
+print('CHECK!!!!!!!!!!!!!!!!!!')
+print(head(df))
+print(df)
 cameraOut <- cameraDIMS(data=df,
                         params_iso=paramiso,
                         params_adduct=paramadduct,

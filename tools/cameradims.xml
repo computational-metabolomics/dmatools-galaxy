@@ -1,9 +1,9 @@
-<tool id="cameradims" name="CAMERA_DIMS" version="0.1.0">
-    <description>Modification of the R package CAMERA to work on a DIMS dasets</description>
+<tool id="cameradims" name="CAMERA_DIMS" version="0.1.4">
+    <description>Modification of the R package CAMERA to work on DIMS data</description>
     <requirements>
-        <requirement type="package" >R</requirement>
-	    <requirement type="package" >r-optparse</requirement>
-        <requirement type="package" version="0.2.2">r-cameradims</requirement>
+        <requirement type="package" version="3.4.1">R</requirement>
+        <requirement type="package" version="0.2.4">r-cameradims</requirement>
+        <requirement type="package" version="1.4.4" >r-optparse</requirement>
     </requirements>
     <stdio>
         <exit_code range="1:" />

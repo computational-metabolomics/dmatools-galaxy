@@ -1,19 +1,17 @@
-{% set version = '0.2.2' %}
+{% set version = '0.2.3' %}
 
 package:
   name: r-cameradims
   version: {{ version|replace("-", "_") }}
 
 source:
-  fn: cameraDIMS.tar.gz
-  url: https://www.dropbox.com/s/jl2ku9mff698f8s/cameraDIMS.tar.gz?dl=1
+  git_rev: HEAD
+  git_url: https://github.com/computational-metabolomics/cameraDIMS.git
 
 build:
   number: 0
   skip: True # [osx]
-  rpaths:
-    - lib/R/lib/
-    - lib/
+
 
 requirements:
   build:

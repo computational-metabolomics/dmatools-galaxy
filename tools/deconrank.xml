@@ -1,14 +1,13 @@
-<tool id="deconrank" name="deconrank" version="0.1.5">
+<tool id="deconrank" name="deconrank" version="0.1.7">
     <description>Deconvolute adducts and isotopes then score and rank for fragmentation</description>
     <requirements>
-        <requirement type="package" version="0.0.7">deconrank</requirement>
+        <requirement type="package" version="0.0.8">deconrank</requirement>
     </requirements>
     <stdio>
         <exit_code range="1:" />
     </stdio>
 
     <command ><![CDATA[
-
         python -m deconrank
                     -i $peaks_file
                     -o .
@@ -37,6 +36,7 @@
                     #if $dschedule.template_cond.template_select == "user"
                         --method_template_name $dschedule.template_cond.template_name
                     #end if
+                    --target_name $peaks_file.element_identifier
 
      ]]></command>
 
