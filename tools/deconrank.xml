@@ -49,9 +49,7 @@
             <option value="dims">DI-MS</option>
         </param>
 
-        <param name="polarity" type="select" label="polarity" help="polarity [pos, neg], will assign automatically
-                                                                    based on input file name if not defined" >
-            <option value="auto" selected="true">automatic (based on input file name)</option>
+        <param name="polarity" type="select" label="polarity" help="polarity [pos, neg]" >
             <option value="pos" >positive</option>
             <option value="neg">negative</option>
         </param>
