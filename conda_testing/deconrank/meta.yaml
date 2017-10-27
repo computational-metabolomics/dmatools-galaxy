@@ -1,12 +1,11 @@
-{% set version = '0.0.7' %}
+{% set version = '0.0.8' %}
 
 package:
   name: deconrank
   version: {{ version|replace("-", "_") }}
 
 source:
-  fn: deconrank_v0_0_7.tar.gz
-  url: https://www.dropbox.com/s/bn7suc1ttqzxsts/deconrank_v0_0_7.tar.gz?dl=1
+  git_url: https://github.com/computational-metabolomics/deconrank.git
 
 
 requirements:
