@@ -1,7 +1,7 @@
-<tool id="deconrank" name="deconrank" version="0.2.7">
+<tool id="deconrank" name="deconrank" version="0.2.32">
     <description>Deconvolute adducts and isotopes then score and rank for fragmentation</description>
     <requirements>
-        <requirement type="package" version="0.0.11">deconrank</requirement>
+        <requirement type="package" version="0.0.22">deconrank</requirement>
     </requirements>
     <stdio>
         <exit_code range="1:" />
@@ -38,7 +38,7 @@
                     #end if
                     --target_name '$peaks_file.element_identifier'
 
-                    && ls
+                    && ls && pwd
 
      ]]></command>
 
@@ -131,28 +131,23 @@
 
     </inputs>
     <outputs>
-        <!-- commented out because of testing-->
-        <!--<data name="decon_scores" label="${tool.name} on ${on_string}: scores"-->
-              <!--from_work_dir="scores.tsv"  format="tsv"/>-->
-        <!--<data name="decon_traceback" label="${tool.name} on ${on_string}: traceback"-->
-              <!--from_work_dir="traceback.tsv" format="tsv"/>-->
-        <!--<data name="decon_xcalibur_auto_input" label="${tool.name} on ${on_string}: XcaliburAuto input"-->
-               <!--format="tsv">-->
-            <!--<filter>technology == "dims"</filter>-->
-        <!--</data>-->
+
+        <data name="scores" label="${tool.name} on ${on_string}: scores"
+              from_work_dir="scores.tsv"  format="tsv"/>
+        <data name="traceback" label="${tool.name} on ${on_string}: traceback"
+              from_work_dir="traceback.tsv" format="tsv"/>
+        
+        <data name="targets" label="${tool.name} on ${on_string}: targets" format="tsv">
+              <discover_datasets pattern="(?P&lt;designation&gt;.+)\.tsv"  directory="targets" visible="true" format="tsv" />
+              <filter>technology == "dims"</filter>
+        </data>
+
+        <data name="XcaliburAutoInput" label="${tool.name} on ${on_string}: XcaliburAutoInput"
+              from_work_dir="xcalibur_auto_input.tsv" format="tsv">
+            <filter>technology == "dims"</filter>
+        </data>
 
 
-        <!-- this does not work on HPC computer -->
-        <!--<data name="decon_targets" label="${tool.name} on ${on_string}: targets" format="tsv">-->
-              <!--<discover_datasets pattern="(?P&lt;designation&gt;.+)_target\.tsv"  directory="." visible="true" format="tsv" />-->
-              <!--<filter>technology == "dims"</filter>-->
-        <!--</data>-->
-
-
-        <!-- this works on HPC computer -->
-        <collection name="decon_targets" type="list" label="${tool.name} on ${on_string}: targets">
-            <discover_datasets pattern="(?P&lt;designation&gt;.+)target\.tsv" format="tsv" directory="." visible="false" />
-        </collection>
 
     </outputs>
     <tests>
@@ -160,10 +155,10 @@
             <param name="peaks_file" value="camera_annotated_peaklist.txt" ftype="tsv"/>
             <param name="technology" value="dims"/>
             <param name="polarity" value="pos"/>
-            <output name="decon_scores" value="scores.tsv"/>
-            <output name="decon_traceback" value="traceback.tsv"/>
-            <output name="decon_xcalibur_auto_input" value="XcaliburAutoInput.tsv"/>
-            <output name="decon_targets" value="target.tsv"/>
+            <output name="scores" value="scores.tsv"/>
+            <output name="traceback" value="traceback.tsv"/>
+            <output name="XcaliburAutoInput" value="XcaliburAutoInput.tsv"/>
+            <output name="target" value="target.tsv"/>
         </test>
     </tests>
 
