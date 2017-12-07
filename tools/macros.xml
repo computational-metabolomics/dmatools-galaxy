@@ -4,7 +4,7 @@
         <requirements>
             <requirement type="package" >R</requirement>
 	        <requirement type="package" >r-optparse</requirement>
-            <requirement type="package" >r-xcmswrapper</requirement>
+            <requirement type="package" version="0.0.2" >r-xcmswrapper</requirement>
         </requirements>
     </xml>
 </macros>

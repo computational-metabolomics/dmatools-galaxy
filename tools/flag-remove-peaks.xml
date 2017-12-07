@@ -1,8 +1,8 @@
-<tool id="flag_remove_peaks" name="flag_remove_peaks" version="0.1.0">
+<tool id="flag_remove_peaks" name="flag_remove_peaks" version="0.1.2">
     <requirements>
         <requirement type="package" >r</requirement>
 	    <requirement type="package" >r-optparse</requirement>
-        <requirement type="package" >r-xcmswrapper</requirement>
+        <requirement type="package" version="0.0.3" >r-xcmswrapper</requirement>
     </requirements>
     <description>Tool to flag and remove XCMS grouped peaks from the xcmsSet object based on various thresholds
         (e.g. RSD of intensity and retention time).

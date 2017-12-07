@@ -1,0 +1,51 @@
+<tool id="dmadb_zip" name="dmadb_zip" version="0.0.1">
+    <description>Zip up data for upload into the DMAdb </description>
+    <stdio>
+        <exit_code range="1:" />
+    </stdio>
+    <requirements>
+        <requirement type="package" >r-optparse</requirement>
+        <requirement type="package" >r-xcmswrapper</requirement>
+    </requirements>
+    <command interpreter="Rscript" ><![CDATA[
+        dmadb_zip.R
+                    # if analysis_type.select=='lcms'
+                        --grp_peaklist=$grp_peaklist.grp_peaklist
+                        --xsa=$xsa
+                    # end if
+                    # if analysis_type.select=='lcmsms'
+                        --sqlite_db=$SQLite_db
+                    # end if
+
+
+
+    ]]></command>
+    <inputs>
+        <conditional name="analysis_type">
+            <param name="select" type="select" label="Choose analysis type to zip">
+                <option value="lcms"  >LC-MS data processing</option>
+                <option value="lcmsms">LC-MS/MS annotation (spectral matching)</option>
+                <option value="dims"  >DI-MS annotation (spectral matching)</option>
+            </param>
+            <when value="lcms">
+                <param type="data" name="grp_peaklist" format="tabular,tsv" help="tsv or tabular file of grouped peaklist"/>
+                <param type="data" name="xsa" format="rdata" help="CAMERA annotated object (includes xcmsSet object)"/>
+            </when>
+            <when value="lcmsms">
+                <param type="data" name="SQLite_db_lcms" format="sqlite" help="SQLite datbase of results and annotations"/>
+            </when>
+        </conditional>
+
+    </inputs>
+    <outputs>
+        <data name="zipped" label="${tool.name} on ${on_string}"
+              from_work_dir="dma_results.zip" visible="true" type="data" format="tsv"/>
+    </outputs>
+    <tests>
+
+    </tests>
+    <help><![CDATA[
+
+
+    ]]></help>
+</tool>

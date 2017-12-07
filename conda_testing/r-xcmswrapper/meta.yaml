@@ -1,12 +1,13 @@
-{% set version = '0.0.1' %}
+{% set version = '0.0.3' %}
 
 package:
   name: r-xcmswrapper
   version: {{ version|replace("-", "_") }}
 
 source:
-  fn: xcmsWrapper.tar.gz
-  url: https://www.dropbox.com/s/ta9i96yyv4ouk3q/XCMSwrapper.tar.gz?dl=1
+  path: /home/tnl495/Dropbox/code/XCMSwrapperGalaxy
+
+
 
 build:
   number: 0
@@ -17,22 +18,23 @@ build:
 
 requirements:
   build:
-    - bioconductor-biobase
-    - bioconductor-biocgenerics
+    - 'r-base >=3.4.1'
+    - 'bioconductor-mspurity >=1.4.1'
     - 'bioconductor-mzr >=1.1.6'
     - bioconductor-xcms
-    - r-base
+    - bioconductor-camera
     - r-rcolorbrewer
     - r-intervals
     - r-nnet
+    - r-testthat
 
 
   run:
-    - bioconductor-biobase
-    - bioconductor-biocgenerics
+    - 'r-base >=3.4.1'
+    - 'bioconductor-mspurity >=1.4.1'
     - 'bioconductor-mzr >=1.1.6'
     - bioconductor-xcms
-    - r-base
+    - bioconductor-camera
     - r-rcolorbrewer
     - r-intervals
     - r-nnet

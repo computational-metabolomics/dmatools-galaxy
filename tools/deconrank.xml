@@ -1,4 +1,4 @@
-<tool id="deconrank" name="deconrank" version="0.3.3">
+<tool id="deconrank" name="deconrank" version="0.3.4">
     <description>Deconvolute adducts and isotopes then score and rank for fragmentation</description>
     <requirements>
         <requirement type="package" version="0.0.26">deconrank</requirement>
@@ -8,6 +8,7 @@
     </stdio>
 
     <command ><![CDATA[
+        echo "$irm" &&
         python -m deconrank
                     -i $peaks_file
                     -o .

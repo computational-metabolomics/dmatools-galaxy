@@ -1,8 +1,8 @@
 import bioblend.galaxy
 
-url = 'http://127.0.0.1:8090'
-api_key = '05b3ecc1982a6e8b4458b7f40af8ecff'
-tools = ["flag-remove-peaks"]
+url = 'http://0.0.0.0:8888'
+api_key = '3e3c3dcd24de016993a4a593187c2358'
+tools = ["flag-remove-peaks", "cameradims"]
 gi = bioblend.galaxy.GalaxyInstance(url, api_key)
 gi.verify = False
 

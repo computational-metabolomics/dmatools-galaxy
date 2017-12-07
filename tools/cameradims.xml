@@ -1,4 +1,4 @@
-<tool id="cameradims" name="CAMERA_DIMS" version="0.1.4">
+<tool id="cameradims" name="CAMERA_DIMS" version="0.1.13">
     <description>Modification of the R package CAMERA to work on DIMS data</description>
     <requirements>
         <requirement type="package" version="3.4.1">R</requirement>
@@ -11,9 +11,11 @@
     <command interpreter="Rscript"><![CDATA[
         cameradims.R --in_file $peaks_file
                       --out_dir .
-                      --ppm $ppm
+                      --ppm_adduct $ppm_adduct
+                      --ppm_iso $ppm_iso
+                      --mzabs_adduct $mzabs_adduct
+                      --mzabs_iso $mzabs_iso
                       --maxiso $maxiso
-                      --mzabs $mzabs
                       --maxcharge $maxcharge
                       --maxmol $maxmol
                       --polarity $polarity
@@ -30,9 +32,13 @@
     <inputs>
         <param type="data" name="peaks_file" format="tabular,tsv"
                 help="tsv or tabular file with mz and intensity columns"/>
-        <param name="ppm" type="float" label="ppm" value="2"
-                    help="general ppm error"/>
-        <param name="mzabs" type="float" label="mzabs" value="0.015"
+        <param name="ppm_adduct" type="float" label="ppm (adduct)" value="5"
+                    help="general ppm error (adduct)"/>
+        <param name="ppm_iso" type="float" label="ppm (iso)" value="5"
+                    help="general ppm error (iso)"/>
+        <param name="mzabs_adduct" type="float" label="mzabs (adduct)" value="0.015"
+                    help="general absolute error in m/z"/>
+        <param name="mzabs_iso" type="float" label="mzabs (iso)" value="0.015"
                     help="general absolute error in m/z"/>
         <param name="maxmol" type="integer" label="maxmol" value="3"
                     help="highest number(n) of allowed clusterion [nM+ion] (argument called multiplier in findAdducts())"/>
