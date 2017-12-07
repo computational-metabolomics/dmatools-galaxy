@@ -131,12 +131,6 @@
             </when>
         </conditional>
 
-
-
-
-
-
-
     </inputs>
     <outputs>
         <collection name="inclusion_lists" type="list" label="${tool.name} on ${on_string}: inclusion lists">
@@ -150,29 +144,6 @@
 
     </outputs>
     <tests>
-        <test>
-            <param name="blank_flag.blank_flag" value="update" />
-            <conditional name="blank_flag">
-                <param name="blank_flag"  value="update"/>
-                <param name="blank_class" value="KO" />
-            </conditional>
-            <conditional name="peak_removal">
-                <param name="peak_removal"  value="remove"/>
-            </conditional>
-            <param name="xset_path" value="xset.RData" type="rdata"  />
-            <output name="peaklist_filtered" type="tabular" file="peaklist_filtered.tabular">
-                <assert_contents>
-                    <has_n_columns n="33" />
-                </assert_contents>
-            </output>
-            <output name="removed_peaks" type="tabular" file="removed_peaks.tabular">
-                <assert_contents>
-                    <has_n_columns n="34" />
-                </assert_contents>
-            </output>
-            <output name="xset_filtered" type="rdata" file="xset_filtered.RData"/>
-
-        </test>
     </tests>
     <help><![CDATA[
 
