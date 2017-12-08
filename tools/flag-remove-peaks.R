@@ -131,7 +131,8 @@ removed_peaks <- ffrm_out[[3]]
 
 save.image(file=file.path(opt$out_dir, 'xset_filtered.RData'))
 
-write.table(data.frame('ID'=rownames(grp_peaklist),grp_peaklist),
+# grpid needed for mspurity ID needed for deconrank... (will clean up at some up)
+write.table(data.frame('grpid'=rownames(grp_peaklist), 'ID'=rownames(grp_peaklist), grp_peaklist),
         file.path(opt$out_dir, 'peaklist_filtered.txt'), row.names=FALSE, sep='\t')
 
 removed_peaks <- data.frame(removed_peaks)
