@@ -16,7 +16,7 @@ Dependencies for these Galaxy tools should be handled by CONDA. The packages use
 
 * deconrank: A python tool for deconvoluting and ranking precursors to use for fragmentation experiments
 * cameraDIMS: A 'hack' of the R package CAMERA so that it can be run on direct infusion datasets (DIMS)
-* xcmsWrapper: An R package for LC-MS various processing (e.g blank subtraction, directed fragmentation 'nearline' methods)
+* xcmsWrapper: An R package for various LC-MS processing (e.g blank subtraction, directed fragmentation 'nearline' methods)
 
 The dependencies are currently found on channel  [tomnl](https://anaconda.org/tomnl/r-xcmswrapper) on [anaconda](https://anaconda.org/tomnl/r-xcmswrapper)
 
