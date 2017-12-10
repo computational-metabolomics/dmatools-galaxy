@@ -24,6 +24,7 @@ Developers & Contributors
 -------------------------
  - Thomas N. Lawson (tnl495@bham.ac.uk) - [University of Birmingham (UK)](http://www.birmingham.ac.uk/index.aspx) 
  - Martin R. Jones (m.r.jones.1@bham.ac.uk) - [University of Birmingham (UK)](http://www.birmingham.ac.uk/index.aspx)
+ - Ralf J. M. Weber (r.j.weber@bham.ac.uk) - [University of Birmingham (UK)](http://www.birmingham.ac.uk/index.aspx)
 
 Related galaxy tools outside of this repository
 -------------------------
