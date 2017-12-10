@@ -1,6 +1,6 @@
 DMAtools for Galaxy
 ========================
-Galaxy tools for use within the Deep Metabolome Annotation (DMA) project. Currently only for mass spectrometry data, the tools are primarily for additional data processing (including directed fragmentation tools) and for interaction with Deep Metabolome Annotation Database ([DMAdb](https://github.com/computational-metabolomics/dmadb))
+Galaxy tools for use within the Deep Metabolome Annotation (DMA) project. Currently only for mass spectrometry data, the tools are primarily for additional data processing (including directed fragmentation tools) and for interaction with Deep Metabolome Annotation Database ([DMAdb](https://github.com/computational-metabolomics/dmadb) -  public soon)
 
 Warning
 ------
