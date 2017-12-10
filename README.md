@@ -4,7 +4,7 @@ Galaxy tools for use within the Deep Metabolome Annotation (DMA) project. Curren
 
 Warning
 ------
-Proceed with caution these tools are in active development so tools may change! Stable release coming soon.
+Proceed with caution these tools are in active development so tools may change! Stable release to Galaxy toolshed coming soon.
 
 Galaxy
 ------
