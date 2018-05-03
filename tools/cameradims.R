@@ -81,11 +81,16 @@ df <- df[df$i>opt$intensity_filter,]
 
 
 if (opt$rule_type=='extended_large'){
+
+   rule_sep=','
+   opt$rule_type <- 'user'
    if(opt$polarity=='pos'){
-	opt$rule_path <-  read.csv(system.file("rules", "CAMERA_rules_PosFinal_PlusLi.csv", package = "cameraDIMS"),  header=TRUE)
+	opt$rule_path <-  system.file("rules", "CAMERA_rules_PosFinal_PlusLi.csv", package = "cameraDIMS")
    }else{
-	opt$rule_path <-  read.csv(system.file("rules", "CAMERA_rules_NegFinal_PlusLi.csv", package = "cameraDIMS"),  header=TRUE)
+	opt$rule_path <-  system.file("rules", "CAMERA_rules_NegFinal_PlusLi.csv", package = "cameraDIMS")
    }   
+}else{
+   rule_sep='\t'
 }
 
 cameraOut <- cameraDIMS(data=df,
@@ -93,7 +98,7 @@ cameraOut <- cameraDIMS(data=df,
                         params_adduct=paramadduct,
                         rule_type=opt$rule_type,
                         rule_pth=opt$rule_path,
-                        rule_sep='\t',
+                        rule_sep=rule_sep,
                         rule_export=rule_export)
 
 
