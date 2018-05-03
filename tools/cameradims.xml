@@ -1,4 +1,4 @@
-<tool id="cameradims" name="CAMERA_DIMS" version="0.1.13">
+<tool id="cameradims" name="CAMERA_DIMS" version="0.1.15">
     <description>Modification of the R package CAMERA to work on DIMS data</description>
     <requirements>
         <requirement type="package" version="3.4.1">R</requirement>
@@ -59,6 +59,7 @@
             <param name="ruleset" type="select" label="Rules for adducts" >
                 <option value="primary adducts" >Primary adducts ([M+Na]+, [M+K]+ and [M+NH4]+")</option>
                 <option value="extended" selected="true" >Extended adducts</option>
+                <option value="extended_large" >Extended adducts (large)</option>
                 <option value="user" >Provide a csv file of the rules to use</option>
             </param>
             <when value="user">
