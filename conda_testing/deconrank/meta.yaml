@@ -1,4 +1,4 @@
-{% set version = '0.0.8' %}
+{% set version = '0.1.6' %}
 
 package:
   name: deconrank
@@ -10,7 +10,7 @@ source:
 
 requirements:
   build:
-    - python
+    - python==2.7.*
     - pip
     - setuptools
     - numpy

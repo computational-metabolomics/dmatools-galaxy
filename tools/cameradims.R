@@ -79,6 +79,11 @@ df$i <- as.numeric(df$i)
 
 df <- df[df$i>opt$intensity_filter,]
 
+if (nrow(df)==0){
+   print('No peaks left after filtering')
+   quit()
+}
+
 
 if (opt$rule_type=='extended_large'){
 

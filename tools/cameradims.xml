@@ -1,4 +1,4 @@
-<tool id="cameradims" name="CAMERA_DIMS" version="0.1.17">
+<tool id="cameradims" name="CAMERA_DIMS" version="0.1.19">
     <description>Modification of the R package CAMERA to work on DIMS data</description>
     <requirements>
         <requirement type="package" version="3.4.1">R</requirement>

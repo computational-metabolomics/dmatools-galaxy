@@ -1,1 +1,2 @@
-C:\Documents and Settings\XPMUser\Desktop\XcaliburAuto\templates\DMA_Pos_MS_MSMS_MSn_Final_v3.meth C:\Documents and Settings\XPMUser\Desktop\XcaliburAuto\targets\target.tsv 14.4 10.4 C:\Documents and Settings\XPMUser\Desktop\XcaliburAuto\methods\dataset_1n.meth
+meth_template	target_ex	end_time_min	hcd_total_time_min	method_ex
+'C:\Documents and Settings\XPMUser\Desktop\XcaliburAuto\templates\Pos_MSMS_MSn.meth'	'C:\Documents and Settings\XPMUser\Desktop\XcaliburAuto\targets\camera_annotated_peaklist\camera_annotated_peaklist.tsv'	14.4	10.4	'C:\Documents and Settings\XPMUser\Desktop\XcaliburAuto\methods\camera_annotated_peaklist_MSn.meth'
