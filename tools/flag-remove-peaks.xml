@@ -2,6 +2,7 @@
     <requirements>
         <requirement type="package" >r</requirement>
 	    <requirement type="package" >r-optparse</requirement>
+    <requirement type="package" version="1.5.4" >bioconductor-mspurity</requirement>
         <requirement type="package" version="0.0.3" >r-xcmswrapper</requirement>
     </requirements>
     <description>Tool to flag and remove XCMS grouped peaks from the xcmsSet object based on various thresholds
@@ -42,6 +43,9 @@
                     --xset_name=$advanced.xset_name
                     $advanced.temp_save.value
 
+                #end if
+                #if $choose_samp.choose_samp=='yes'
+                        --samplelist=$choose_samp.samplelist
                 #end if
     ]]></command>
     <inputs>
@@ -132,9 +136,22 @@
                  (--grp_rm_ids)"/>
                 <param name="xset_name" type="text" label="xset_name" value="xset"
                     help="Name of the xcmsSet object within the RData file (--xset_name)"/>
+	      </when>
+	</conditional>
+	    	<conditional name="choose_samp">
+            		<param name="choose_samp" type="select" label="Samplelist">
+            		    <option value="yes" >Use samplelist</option>
+            		    <option value="" selected="true">Don't use samplelist</option>
+            		</param>
+            		<when value="">
+            		</when>
+            		<when value="yes">
+            		    <param name="samplelist" type="data" label="samplelist" format="tsv,tabular"
+            		        help="A samplelist can be provided to find an appriopiate blank class (requires a column 'blank' where 'yes' indicates
+            	              the class should be used as the blank (--samplelist)"/>
 
-            </when>
-        </conditional>
+            		</when>
+	        </conditional>
     </inputs>
     <outputs>
 	    <data name="peaklist_filtered" format="tabular" label="peaklist_filtered"

@@ -71,12 +71,19 @@ option_list <- list(
               help="Assign True if files for each step saved (for testing purposes) [default = %default]"
   ),
 
+  make_option("--samplelist",  type="character", help="Sample list to determine the blank class"),
+
   make_option("--xset_name",  default="xset",
               help="Name of the xcmsSet object within the RData file [default = %default]"
   )
 
 
+
 )
+
+  #make_option("--multilist", action="store_true"
+  #            help="NOT CURRENTLY IMPLEMENTED: If paired blank removal is to be performed a - multilist -  sample list file has to be provided"
+  #),
 
 # store options
 opt<- parse_args(OptionParser(option_list=option_list))
@@ -104,14 +111,31 @@ loadRData <- function(rdata_path, xset_name){
 
 xset<-loadRData(opt$xset_path, opt$xset_name)
 print(xset)
-ffrm_out <- XCMSwrapper::flag_remove(xset,
+if (is.null(opt$samplelist)){
+    blank_class <- opt$blank_class
+}else{
+    samplelist <- read.table(opt$samplelist, sep='\t', header=TRUE)
+    samplelist_blank <- unique(samplelist$sample_class[samplelist$blank=='yes'])
+
+    chosen_blank <- samplelist_blank[samplelist_blank %in% xset@phenoData$class]
+    if (length(chosen_blank)>1){
+        print('ERROR: only 1 blank is currently allowed to be used with this tool')
+        exit()
+    }
+    blank_class <- as.character(chosen_blank)
+    print(blank_class)
+}
+
+
+if (is.null(opt$multilist)){
+    ffrm_out <- XCMSwrapper::flag_remove(xset,
                         pol=opt$polarity,
                         rsd_i_blank=opt$rsd_i_blank,
                         minfrac_blank=opt$minfrac_blank,
                         rsd_rt_blank=opt$rsd_rt_blank,
                         ithres_blank=opt$ithres_blank,
                         s2b=opt$s2b,
-                        ref.class=opt$blank_class,
+                        ref.class=blank_class,
                         egauss_thr=opt$egauss_thr,
                         rsd_i_sample=opt$rsd_i_sample,
                         minfrac_sample=opt$minfrac_sample,
@@ -125,16 +149,36 @@ ffrm_out <- XCMSwrapper::flag_remove(xset,
                         remove_spectra=remove_spectra,
                         grp_rm_ids=unlist(strsplit(as.character(opt$grp_rm_ids), split=", "))[[1]])
 
-xset <- ffrm_out[[1]]
-grp_peaklist <- ffrm_out[[2]]
-removed_peaks <- ffrm_out[[3]]
+    xset <- ffrm_out[[1]]
+    grp_peaklist <- ffrm_out[[2]]
+    removed_peaks <- ffrm_out[[3]]
 
-save.image(file=file.path(opt$out_dir, 'xset_filtered.RData'))
+    save.image(file=file.path(opt$out_dir, 'xset_filtered.RData'))
 
-# grpid needed for mspurity ID needed for deconrank... (will clean up at some up)
-write.table(data.frame('grpid'=rownames(grp_peaklist), 'ID'=rownames(grp_peaklist), grp_peaklist),
-        file.path(opt$out_dir, 'peaklist_filtered.txt'), row.names=FALSE, sep='\t')
+    # grpid needed for mspurity ID needed for deconrank... (will clean up at some up)
+    write.table(data.frame('grpid'=rownames(grp_peaklist), 'ID'=rownames(grp_peaklist), grp_peaklist),
+                file.path(opt$out_dir, 'peaklist_filtered.txt'), row.names=FALSE, sep='\t')
 
-removed_peaks <- data.frame(removed_peaks)
-write.table(data.frame('ID'=rownames(removed_peaks),removed_peaks),
+    removed_peaks <- data.frame(removed_peaks)
+    write.table(data.frame('ID'=rownames(removed_peaks),removed_peaks),
         file.path(opt$out_dir, 'removed_peaks.txt'), row.names=FALSE, sep='\t')
+
+}else{
+
+   
+   # TODO
+   #xsets <- split(xset, multilist_df$multlist)
+   #
+   #mult_grps <- unique(multilist_df$multlist)
+   #
+   #for (mgrp in mult_grps){
+   #   xset_i <- xsets[mgrp]
+   #   xcms::group(xset_i, 
+   #
+   # }
+
+
+
+}
+
+
