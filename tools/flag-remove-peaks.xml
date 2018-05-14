@@ -1,9 +1,9 @@
-<tool id="flag_remove_peaks" name="flag_remove_peaks" version="0.1.3">
+<tool id="flag_remove_peaks" name="flag_remove_peaks" version="0.1.5">
     <requirements>
         <requirement type="package" >r</requirement>
 	    <requirement type="package" >r-optparse</requirement>
     <requirement type="package" version="1.5.4" >bioconductor-mspurity</requirement>
-        <requirement type="package" version="0.0.3" >r-xcmswrapper</requirement>
+        <requirement type="package" version="0.2.4" >r-xcmswrapper</requirement>
     </requirements>
     <description>Tool to flag and remove XCMS grouped peaks from the xcmsSet object based on various thresholds
         (e.g. RSD of intensity and retention time).
@@ -103,7 +103,7 @@
             <when value="">
             </when>
             <when value="remove">
-                 <param name="minfrac_xcms" type="float" label="minfrac_xcms" value="0.5" min="0.0" max="1"
+                 <param name="minfrac_xcms" type="float" label="minfrac_xcms" value="0.7" min="0.0" max="1"
                     help="minfrac for xcms  grouping (--minfrac_xcms)"/>
                  <param name="mzwid" type="float" label="mzwid" value="0.001"
                     help="mzwid for xcms  grouping (--minfrac_xcms)"/>
@@ -208,10 +208,11 @@ The calculated columns for the update peaklist dataframe include:
 * Coverage across all classes
 * mzmin_full & mzmax_full: the full mzrange of each grouped peak
 * rtmin_full & rtmax_full: the full rtrange of each grouped peak
-* flag for criteria for the blank class (if 1 it means the blank is valid) and this grouped peak will be removed
+* flag for criteria for the blank class (if 1 it means the blank is valid in at least 1 condition) and this grouped peak will be removed
 * flag for criteria for the sample classes (if 1 it means that this grouped peak is valid for this class)
-* all_sample_valid: flag for all samples (if 1 it means that at least 1 sample class is valid and the blank is not valid) (we keep the grouped peak)
+* all_sample_valid: flag for all samples (if 1 it means that at least 1 sample class is valid, this ignores the blank) 
 
+To filter out blank peaks just filter out all peaks where the blank_valid is equal to 1
 This is in addition to the standard output from the xcmsSet peaklist
 
 **flag example**
@@ -225,7 +226,7 @@ blank_valid   cond1_valid   cond2_valid   all_sample_valid Keep peak?
 ------------- ------------- ------------- ---------------- ----------------
 0             1             1             1                Yes
 ------------- ------------- ------------- ---------------- ----------------
-1             0             1             0                No
+1             0             1             1                No
 ------------- ------------- ------------- ---------------- ----------------
 1             0             0             0                No
 ------------- ------------- ------------- ---------------- ----------------

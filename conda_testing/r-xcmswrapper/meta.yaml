@@ -1,11 +1,11 @@
-{% set version = '0.0.3' %}
+{% set version = '0.2.4' %}
 
 package:
   name: r-xcmswrapper
   version: {{ version|replace("-", "_") }}
 
 source:
-  path: /home/tnl495/Dropbox/code/XCMSwrapperGalaxy
+  path: /home/tnl495/XCMSwrapper
 
 
 
@@ -27,6 +27,8 @@ requirements:
     - r-intervals
     - r-nnet
     - r-testthat
+    - r-roxygen2
+    - bioconductor-faahKO
 
 
   run:
@@ -38,6 +40,8 @@ requirements:
     - r-rcolorbrewer
     - r-intervals
     - r-nnet
+    - r-roxygen2
+    - bioconductor-faahKO
 
 
 
