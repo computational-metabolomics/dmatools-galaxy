@@ -226,7 +226,7 @@ var renderTestResults = function(testData) {
 	var $sidebar = $("#nav-sidebar-tests");
 	for(var index in testData["tests"]) {
 		var test = testData["tests"][index];
-		var testResult = new TestResult(test);
+		var testResult = new TestResult(index, test);
 		var rawId = testResult.rawId;
 
 		var panelType = testResult.passed ? "panel-success panel-success-custom" : "panel-danger panel-danger-custom";
@@ -304,7 +304,7 @@ var renderTestResults = function(testData) {
 	}
 }
 
-var TestResult = function(data) {
+var TestResult = function(index, data) {
 	this.rawId = data["id"];
 
 	var idParts = this.rawId.split("TestForTool_");
@@ -316,10 +316,14 @@ var TestResult = function(data) {
 		splitParts = rSplit(testMethod, "_", 1);
 	}
 	var toolName = splitParts[0];
-	var testIndex = splitParts[1];
+	var testIndex;
+	if(data["data"]["test_index"] !== null) {
+		testIndex = data["data"]["test_index"];
+	} else {
+		testIndex = splitParts[1];
+	}
 	this.toolName = toolName;
-	this.testIndex = parseInt(testIndex);
-	console.log(data);
+	this.testIndex = parseInt(testIndex === undefined ? index : testIndex);
 	this.status = data["data"]["status"];
 	var job = data["data"]["job"];
 	if(job) {
@@ -375,7 +379,7 @@ function getUrlParameter(sParam)
         .success(function(content) { renderTestResults( $.parseJSON(content) ); })
         .failure(function() { alert("Failed to load test data.")} );
       } else {
-        var test_data = {"tests": [{"data": {"inputs": {"blank_flag|blank_class": "KO", "blank_flag|blank_flag": "update", "peak_removal|peak_removal": "remove", "xset_path": {"src": "hda", "id": "2891970512fa2d5a"}}, "job": {"inputs": {"xset_path": {"src": "hda", "id": "2891970512fa2d5a", "uuid": "354cab47-c6af-47c0-8e50-015ecd5a779a"}}, "update_time": "2018-05-14T12:03:35.110214", "stdout": "$out_dir\n[1] \"/tmp/tmplqp6limv/job_working_directory/000/2/working\"\n\n$xset_path\n[1] \"/tmp/tmplqp6limv/files/000/dataset_1.dat\"\n\n$polarity\n[1] \"NA\"\n\n$rsd_i_blank\n[1] NA\n\n$minfrac_blank\n[1] 0.5\n\n$rsd_rt_blank\n[1] NA\n\n$ithres_blank\n[1] NA\n\n$s2b\n[1] 10\n\n$blank_class\n[1] \"KO\"\n\n$egauss_thr\n[1] NA\n\n$rsd_i_sample\n[1] NA\n\n$minfrac_sample\n[1] 0.8\n\n$rsd_rt_sample\n[1] NA\n\n$ithres_sample\n[1] 5000\n\n$grp_rm_ids\n[1] NA\n\n$remove_spectra\n[1] TRUE\n\n$minfrac_xcms\n[1] 0.7\n\n$mzwid\n[1] 0.001\n\n$bw\n[1] 5\n\n$xset_name\n[1] \"xset\"\n\n$help\n[1] FALSE\n\nAn \"xcmsSet\" object with 6 samples\n\nTime range: 2501.4-4498.7 seconds (41.7-75 minutes)\nMass range: 200.1-600 m/z\nPeaks: 23044 (about 3841 per sample)\nPeak Groups: 768 \nSample classes: KO, WT \n\nFeature detection:\n o Peak picking performed on MS1.\nProfile settings: method = bin\n                  step = 0.1\n\nMemory usage: 4.27 MB\n[1] \"Getting full peak widths\"\n[1] \"Get 'individual' peaks from camera-xcms object\"\n[1] \"########## REMOVING FLAGGED PEAKS ###########\"\n[1] \"xset1\"\n[1] \"Getting full peak widths\"\n[1] \"Get 'individual' peaks from camera-xcms object\"\n[1] \"Warning (ignore this statement if blank peaks have been remove). No peaks for  KO\"\n[1] \"Getting full peak widths\"\n[1] \"Get 'individual' peaks from camera-xcms object\"\n", "outputs": {"removed_peaks": {"src": "hda", "id": "54f2a3a23292eb07", "uuid": "491c46b0-bf3b-4657-981f-8b70dba34645"}, "peaklist_filtered": {"src": "hda", "id": "5729865256bc2525", "uuid": "ae91e60d-d481-47ee-b039-6159df485e18"}, "xset_filtered": {"src": "hda", "id": "8155e4b4bf1581ff", "uuid": "9f112133-02bd-4fe6-aca6-a57941866a24"}}, "tool_id": "flag_remove_peaks", "command_line": "Rscript /home/tnl495/code/dmatools-galaxy/tools/flag-remove-peaks.R --xset_path=/tmp/tmplqp6limv/files/000/dataset_1.dat   --rsd_i_blank=NA --minfrac_blank=0.5 --ithres_blank=NA --blank_class=KO  --remove_spectra --minfrac_xcms=0.7 --mzwid=0.001 --bw=5.0", "exit_code": 0, "state": "ok", "create_time": "2018-05-14T12:02:48.654409", "params": {"dbkey": "\"hg17\"", "sample_flag": "{\"sample_flag\": \"\", \"__current_case__\": 0}", "peak_removal": "{\"peak_removal\": \"remove\", \"minfrac_xcms\": \"0.7\", \"mzwid\": \"0.001\", \"bw\": \"5.0\", \"__current_case__\": 1}", "choose_samp": "{\"choose_samp\": \"\", \"__current_case__\": 0}", "chromInfo": "\"/tmp/tmplqp6limv/galaxy-dev/tool-data/shared/ucsc/chrom/hg17.len\"", "blank_flag": "{\"s2b\": \"10.0\", \"blank_class\": \"KO\", \"ithres_blank\": \"NA\", \"rsd_i_blank\": \"NA\", \"__current_case__\": 1, \"minfrac_blank\": \"0.5\", \"rsd_rt_blank\": \"NA\", \"blank_flag\": \"update\"}", "advanced": "{\"__current_case__\": 0, \"advanced\": \"\"}"}, "stderr": "Processing 799801 mz slices ... OK\n", "job_metrics": [], "model_class": "Job", "external_id": "2692", "id": "5729865256bc2525", "user_email": "test@bx.psu.edu"}, "status": "success"}, "id": "functional.test_toolbox.TestForTool_flag_remove_peaks.test_tool_000000", "has_data": true}], "version": "0.1", "summary": {"num_tests": 1, "num_failures": 0, "num_errors": 0, "num_skips": 0}, "exit_code": 0};
+        var test_data = {"tests": [{"data": {"status": "success", "tool_id": "deconrank", "time_seconds": 53.7615008354187, "inputs": {"polarity": "pos", "peaks_file": {"src": "hda", "id": "2891970512fa2d5a"}, "technology": "dims"}, "tool_version": "0.3.12", "job": {"inputs": {"peaks_file": {"src": "hda", "id": "2891970512fa2d5a", "uuid": "01ce9b1f-a031-4064-81bf-c359e23454e7"}}, "update_time": "2018-06-19T13:42:26.155689", "tool_id": "deconrank", "outputs": {"__new_primary_file_camera_annotated_peaklist|camera_annotated_peaklist__": {"src": "hda", "id": "7b55dbb89df8f4e5", "uuid": "db1d7932-0a9b-43f6-b7b9-4705c5ff4da5"}, "XcaliburAutoInput": {"src": "hda", "id": "8155e4b4bf1581ff", "uuid": "8a9255d7-c55f-4452-b3ce-69ef482e90cd"}, "traceback": {"src": "hda", "id": "54f2a3a23292eb07", "uuid": "18b3e420-349b-4861-b107-d6eed549cf5f"}, "scores": {"src": "hda", "id": "5729865256bc2525", "uuid": "35425b70-c7a6-4352-84fd-a9416348fade"}}, "stdout": "__ob__M+1__cb__+,__ob__M+2__cb__+,__ob__M+1__cb__2+,__ob__M+2__cb__2+,__ob__M+1__cb__-,__ob__M+2__cb__-,__ob__M+1__cb__2-,__ob__M+2__cb__2-\n###start time: Tuesday19June2018_0242 ###\n['[M+1]+', '[M+2]+', '[M+1]2+', '[M+2]2+', '[M+1]-', '[M+2]-', '[M+1]2-', '[M+2]2-']\n###getting rules for adduct scoring (polarity:\npositive)###\n/home/tnl495/miniconda3/envs/__deconrank@0.1.7/lib/python2.7/site-packages/deconrank/CAMERA_rules_PosFinal_PlusLi.csv\n###grouping peaks###\n###refining###\n\tscoring\n\tgrouping features\nThe following adduct annotation did not have associated frag_score so were given the default score of 6: set(['[M+NH4+CF3COOH]+'])\ncreate dims targets\n132\nwrite out targets\nout_dir .\nsave text\nsave text xcalibur auto\nsave text targets\nsaved text\n###end time: Tuesday, 19. June 2018 02:42PM ###\n###Time took (min, sec): (0, 0) ###\nconda_activate.log\nscores.tsv\ntargets\ntraceback.tsv\nxcalibur_auto_input.tsv\n/tmp/tmpl3I7P0/job_working_directory/000/2/working\n", "command_line": "echo \"__ob__M+1__cb__+,__ob__M+2__cb__+,__ob__M+1__cb__2+,__ob__M+2__cb__2+,__ob__M+1__cb__-,__ob__M+2__cb__-,__ob__M+1__cb__2-,__ob__M+2__cb__2-\" && python -m deconrank -i /tmp/tmpl3I7P0/files/000/dataset_1.dat -o . --delim tab --pol pos --tech dims --pol pos --pthr 0.4 --stp 0.0 --irm \"__ob__M+1__cb__+,__ob__M+2__cb__+,__ob__M+1__cb__2+,__ob__M+2__cb__2+,__ob__M+1__cb__-,__ob__M+2__cb__-,__ob__M+1__cb__2-,__ob__M+2__cb__2-\" --max_time 1800.0 --min_time 120.0 --max_cid_time 300.0 --peak_time_cid 12.0 --peak_time_hcd 10.0 --percentage_cid 0.333 --delay_time 24.0 --target_name 'camera_annotated_peaklist.txt'  && ls && pwd", "exit_code": 0, "state": "ok", "create_time": "2018-06-19T13:41:52.538746", "params": {"polarity": "\"pos\"", "rulescores": "{\"rulescores\": \"default\", \"__current_case__\": 1}", "full_output": "\"false\"", "chromInfo": "\"/tmp/tmpl3I7P0/galaxy-dev/tool-data/shared/ucsc/chrom/?.len\"", "dbkey": "\"?\"", "dschedule": "{\"peak_time_cid\": \"12.0\", \"template_cond\": {\"template_select\": \"default\", \"__current_case__\": 1}, \"percentage_cid\": \"0.333\", \"max_time\": \"1800.0\", \"delay_time\": \"24.0\", \"min_time\": \"120.0\", \"max_cid_time\": \"300.0\", \"peak_time_hcd\": \"10.0\"}", "stp": "\"0.0\"", "irm": "[\"[M+1]+\", \"[M+2]+\", \"[M+1]2+\", \"[M+2]2+\", \"[M+1]-\", \"[M+2]-\", \"[M+1]2-\", \"[M+2]2-\"]", "weights": "{\"adduct\": \"0.3\", \"intensity\": \"0.3\", \"clustern\": \"0.2\", \"precursor-ion-purity\": \"0.2\"}", "pthr": "\"0.4\"", "technology": "\"dims\""}, "stderr": "", "job_metrics": [], "model_class": "Job", "external_id": "3183", "id": "5729865256bc2525", "user_email": "test@bx.psu.edu"}, "test_index": 0}, "id": "functional.test_toolbox.TestForTool_deconrank.test_tool_000000", "has_data": true}], "version": "0.1", "exit_code": 0, "summary": {"num_skips": 0, "num_errors": 0, "num_failures": 0, "num_tests": 1}};
         renderTestResults(test_data);
       }
     </script>

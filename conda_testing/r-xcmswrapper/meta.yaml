@@ -1,11 +1,11 @@
-{% set version = '0.2.4' %}
+{% set version = '0.2.5' %}
 
 package:
   name: r-xcmswrapper
   version: {{ version|replace("-", "_") }}
 
 source:
-  path: /home/tnl495/XCMSwrapper
+  path: /home/tnl495/code/XCMSwrapper
 
 
 

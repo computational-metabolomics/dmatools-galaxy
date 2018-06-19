@@ -1,7 +1,7 @@
 <tool id="deconrank" name="deconrank" version="0.3.12">
     <description>Deconvolute adducts and isotopes then score and rank for fragmentation</description>
     <requirements>
-        <requirement type="package" version="0.1.6">deconrank</requirement>
+        <requirement type="package" version="0.1.7">deconrank</requirement>
     </requirements>
     <stdio>
         <exit_code range="1:" />
